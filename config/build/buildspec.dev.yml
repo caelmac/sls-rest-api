@@ -2,7 +2,6 @@ version: 0.2
 
 run-as: Linux-user-name
 
-        
 phases:
   install:
     on-failure: ABORT
@@ -11,7 +10,6 @@ phases:
     commands:
       - echo Installing serverless CLI
       - npm i -g serverless@3
-      - cd notes
       - echo Installing npm dependencies of nodes service
       - npm install
   build:
@@ -27,4 +25,4 @@ artifacts:
   name: MyProjectArtifacts
 cache:
   paths:
-    - 'notes/node_modules/**/*'
+    - 'node_modules/**/*'
