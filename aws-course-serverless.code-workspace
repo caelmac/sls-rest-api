@@ -1,16 +1,7 @@
 {
   "folders": [
 	{
-		"path": ".."
-	},
-	{
-		"path": "../../sls-rest-api-main"
-	},
-	{
-		"path": "../../sls-rest-api-main 2"
-	},
-	{
-		"path": "../../../Downloads/sls-rest-api-main 2"
+		"path": "."
 	}
 ],
   "settings": {}
