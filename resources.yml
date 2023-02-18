@@ -1,0 +1,54 @@
+#Nodes dynamoDB table
+nodesTable:
+  Type: AWS::DynamoDB::Table
+  Properties:
+    TableName: Nodes-${self:provider.stage}
+    BillingMode: PAY_PER_REQUEST
+    AttributeDefinitions:
+      - AttributeName: nodeId # hyphon means an array
+        AttributeType: S #S for string
+    KeySchema:
+      - AttributeName: nodeId
+        KeyType: HASH
+
+# Cognito User Pool: https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-cognito-userpool.html
+cognitoUserPool:
+  Type: AWS::Cognito::UserPool
+  Properties:
+    UserPoolName: MyNodesUP-${self:provider.stage}
+
+# Cognito User Pool Web Client: https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-cognito-userpoolclient.html
+cognitoUserPoolWebClient:
+  Type: AWS::Cognito::UserPoolClient
+  Properties:
+    UserPoolId: !Ref cognitoUserPool # will return the generated Id of cognitoUserPool
+    ClientName: web
+    SupportedIdentityProviders:
+      - COGNITO
+    AllowedOAuthFlows: 
+      - implicit
+    AllowedOAuthFlowsUserPoolClient: true
+    AllowedOAuthScopes:
+      - phone
+      - email
+      - profile
+      - openid
+    CallbackURLs:
+      - http://localhost:3000
+
+# Cognito User Pool domain
+cognitoUserPoolDomain:
+  Type: AWS::Cognito::UserPoolDomain
+  Properties:
+    UserPoolId: !Ref cognitoUserPool
+    Domain: mynodescd-${self:provider.stage}
+
+# Application Parameters
+userPoolArnParam:
+  Type: AWS::SSM::Parameter
+  Properties:
+    Name: /nodes/${self:provider.stage}/userpoolArn
+    Type: String
+    Value: !GetAtt cognitoUserPool.Arn #gets the Arn of the cognito user pool - which is needed for the authorizer
+
+
