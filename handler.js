@@ -29,7 +29,7 @@ module.exports.createNode = async (event, context, callback) => {
     callback(null, send(201, data))
 
   } catch(err){
-    callback(null, send(500, err.mesage)) 
+    callback(null, send(500, err.message)) 
   }
 
   // Use this code if you don't use the http event with the LAMBDA-PROXY integration
